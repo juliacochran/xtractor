@@ -34,8 +34,8 @@ function extractString(node) {
     }
 }
 
-export default function(filepath, markers) {
-    const source = fs.readFileSync(filepath, 'utf-8');
+function parseAndExtract(source, filepath, markers) {
+
     const ast = parse(source, {
         sourceType: 'module',
         plugins: [
@@ -78,4 +78,20 @@ export default function(filepath, markers) {
     });
 
     return output;
+}
+
+export default function(filepath, markers, callback) {
+    callback = callback || function() {};
+    return new Promise(function(resolve, reject) {
+        fs.readFile(filepath, 'utf-8', function(err, source) {
+            if (err) {
+                reject(err);
+                callback(err);
+                return;
+            }
+            const extractedStrings = parseAndExtract(source, filepath, markers);
+            resolve(extractedStrings);
+            callback(null, extractedStrings);
+        });
+    });
 }

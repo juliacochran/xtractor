@@ -1,2 +1,4 @@
 import extractFromFile from './extractFromFile';
-export { extractFromFile };
+import extractGlob from './extractGlob';
+
+export { extractFromFile, extractGlob };
