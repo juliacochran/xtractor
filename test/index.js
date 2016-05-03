@@ -1,5 +1,6 @@
 var assert = require('assert');
 var extractFromFile = require('../lib/').extractFromFile;
+var extractGlob = require('../lib/').extractGlob;
 
 describe('xtractor.extractFromFile()', function() {
     beforeEach(function() {});
@@ -115,6 +116,28 @@ describe('xtractor.extractFromFile()', function() {
         })
         .catch(function(err) {
             assert.ok(err, 'should throw an error');
+            done();
+        });
+    });
+});
+
+describe('xtractor.extractGlob()', function() {
+    beforeEach(function() {});
+
+    it('extract all js files', function(done) {
+        extractGlob(__dirname + '/sample/*.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+
+            assert(output.length === 5);
+            done();
+        });
+    });
+
+    it('extract some js files using glob', function(done) {
+        extractGlob(__dirname + '/sample/!(jsx).js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+
+            assert(output.length === 3);
             done();
         });
     });

@@ -35,7 +35,7 @@ function extractString(node) {
 }
 
 function parseAndExtract(source, filepath, markers) {
-
+    // construct act using babylon, with all plugins enabled
     const ast = parse(source, {
         sourceType: 'module',
         plugins: [
@@ -57,6 +57,7 @@ function parseAndExtract(source, filepath, markers) {
     });
     const output = [];
 
+    // traverse the AST
     traverse(ast, {
         CallExpression(path) {
             const {node} = path;
@@ -65,6 +66,7 @@ function parseAndExtract(source, filepath, markers) {
             if ((type === 'Identifier' && markers.indexOf(name) !== -1) || matchesMarkers(path.get('callee'), markers)) {
                 const msgid = extractString(node.arguments[0]);
                 if (msgid) {
+                    // return filepath and start line no.
                     output.push({
                         msgid,
                         loc: {
