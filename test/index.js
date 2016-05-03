@@ -11,24 +11,24 @@ describe('xtractor.extractFromFile()', function() {
             var expectedOutput = [
                 {
                     msgid: 'String 1',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/normal.js',
                         line: 1
-                    }
+                    }]
                 },
                 {
                     msgid: 'String 2 Multiline',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/normal.js',
                         line: 2
-                    }
+                    }]
                 },
                 {
                     msgid: 'String 5 Line 2 Line 3',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/normal.js',
                         line: 4
-                    }
+                    }]
                 }
             ];
             assert.deepStrictEqual(output, expectedOutput, 'Output structure');
@@ -42,17 +42,17 @@ describe('xtractor.extractFromFile()', function() {
             var expectedOutput = [
                 {
                     msgid: 'String 3',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/jsx.js',
                         line: 2
-                    }
+                    }]
                 },
                 {
                     msgid: 'String 4',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/jsx.js',
                         line: 6
-                    }
+                    }]
                 }
             ];
             assert.deepStrictEqual(output, expectedOutput, 'Output structure');
@@ -83,24 +83,24 @@ describe('xtractor.extractFromFile()', function() {
             var expectedOutput = [
                 {
                     msgid: 'String 1',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/normal.js',
                         line: 1
-                    }
+                    }]
                 },
                 {
                     msgid: 'String 2 Multiline',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/normal.js',
                         line: 2
-                    }
+                    }]
                 },
                 {
                     msgid: 'String 5 Line 2 Line 3',
-                    loc: {
+                    loc: [{
                         path: __dirname + '/sample/normal.js',
                         line: 4
-                    }
+                    }]
                 }
             ];
             assert.deepStrictEqual(output, expectedOutput, 'Output structure');

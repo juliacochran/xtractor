@@ -69,10 +69,10 @@ function parseAndExtract(source, filepath, markers) {
                     // return filepath and start line no.
                     output.push({
                         msgid,
-                        loc: {
+                        loc: [{
                             path: filepath,
                             line: node.loc.start.line
-                        }
+                        }]
                     });
                 }
             }
