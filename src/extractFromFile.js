@@ -63,13 +63,16 @@ export default function(filepath, markers) {
             const {callee: {name, type}} = node;
 
             if ((type === 'Identifier' && markers.indexOf(name) !== -1) || matchesMarkers(path.get('callee'), markers)) {
-                output.push({
-                    msgid: extractString(node.arguments[0]),
-                    loc: {
-                        path: filepath,
-                        line: node.loc.start.line
-                    }
-                });
+                const msgid = extractString(node.arguments[0]);
+                if (msgid) {
+                    output.push({
+                        msgid,
+                        loc: {
+                            path: filepath,
+                            line: node.loc.start.line
+                        }
+                    });
+                }
             }
         }
     });
