@@ -1,4 +1,4 @@
-# xtractor [![npm version](https://img.shields.io/npm/v/xtractor.svg?style=flat)](https://www.npmjs.com/package/xtractor)
+# xtractor [![Build Status](https://img.shields.io/travis/pinterest-web/xtractor/master.svg?style=flat)](https://travis-ci.org/pinterest-web/xtractor) [![npm version](https://img.shields.io/npm/v/xtractor.svg?style=flat)](https://www.npmjs.com/package/xtractor)
 
 > Simple string extraction
 

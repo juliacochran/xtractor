@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint --ext .js . || true",
     "test": "mocha || true",
+    "ci": "eslint --ext .js . && mocha",
     "build": "rm -rf lib && mkdir lib && babel src --out-dir lib",
     "prepublish": "npm run build"
   },
