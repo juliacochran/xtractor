@@ -1,6 +1,7 @@
 import fs from 'fs';
 import {parse} from 'babylon';
 import traverse from 'babel-traverse';
+import DedupMerger from './DedupMerger';
 
 function matchesMarkers(callee, markers) {
     return markers
@@ -55,8 +56,8 @@ function parseAndExtract(source, filepath, markers) {
             'functionSent'
         ]
     });
-    const output = [];
-    const stringsSeen = {};
+
+    const merger = new DedupMerger();
 
     // traverse the AST
     traverse(ast, {
@@ -90,34 +91,48 @@ function parseAndExtract(source, filepath, markers) {
                     msgctxt = extractString(node.arguments[3])
                 }
                 if (msgid) {
-                    // check if we've seen the string before
-                    if (stringsSeen[[msgid, msgctxt]]) {
-                        // just update the loc array if we have
-                        stringsSeen[[msgid, msgctxt]].loc.push({
+                    // construct the entry first
+                    const entryToAdd = {
+                        msgid,
+                        loc: [{
                             path: filepath,
                             line: node.loc.start.line
-                        });
-                    } else {
-                        // create a new entry and add it to the output
-                        const msgEntry = {
-                            msgid,
-                            loc: [{
-                                path: filepath,
-                                line: node.loc.start.line
-                            }]
-                        };
-                        if (msgctxt) {
-                            msgEntry.msgctxt = msgctxt;
-                        }
-                        stringsSeen[[msgid, msgctxt]] = msgEntry;
-                        output.push(msgEntry);
+                        }]
+                    };
+                    if (msgctxt) {
+                        entryToAdd.msgctxt = msgctxt;
                     }
+
+                    merger.merge([entryToAdd]);
+
+                    // // check if we've seen the string before
+                    // if (stringsSeen[[msgid, msgctxt]]) {
+                    //     // just update the loc array if we have
+                    //     stringsSeen[[msgid, msgctxt]].loc.push({
+                    //         path: filepath,
+                    //         line: node.loc.start.line
+                    //     });
+                    // } else {
+                    //     // create a new entry and add it to the output
+                    //     const msgEntry = {
+                    //         msgid,
+                    //         loc: [{
+                    //             path: filepath,
+                    //             line: node.loc.start.line
+                    //         }]
+                    //     };
+                    //     if (msgctxt) {
+                    //         msgEntry.msgctxt = msgctxt;
+                    //     }
+                    //     stringsSeen[[msgid, msgctxt]] = msgEntry;
+                    //     output.push(msgEntry);
+                    // }
                 }
             }
         }
     });
 
-    return output;
+    return merger.getOutput();
 }
 
 export default function(filepath, markers, callback) {

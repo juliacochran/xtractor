@@ -1,4 +1,4 @@
-var assert = require('assert');
+var assert = require('chai').assert;
 var extractFromFile = require('../lib/').extractFromFile;
 var extractGlob = require('../lib/').extractGlob;
 
@@ -31,7 +31,7 @@ describe('xtractor.extractFromFile()', function() {
                     }]
                 }
             ];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.sameDeepMembers(output, expectedOutput, 'Output structure');
             done();
         });
     });
@@ -74,7 +74,13 @@ describe('xtractor.extractFromFile()', function() {
                     ]
                 }
             ];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.equal(output.length, expectedOutput.length);
+            output.sort((a,b) => a.msgid.localeCompare(b.msgid));
+            expectedOutput.sort((a,b) => a.msgid.localeCompare(b.msgid));
+
+            for (var i=0; i < output.length; i++) {
+                assert.sameDeepMembers(output[i].loc, expectedOutput[i].loc);
+            }
             done();
         });
     });
@@ -98,7 +104,7 @@ describe('xtractor.extractFromFile()', function() {
                     }]
                 }
             ];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.sameDeepMembers(output, expectedOutput, 'Output structure');
             done();
         });
     });
@@ -108,7 +114,7 @@ describe('xtractor.extractFromFile()', function() {
             assert.ifError(err);
 
             var expectedOutput = [];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.sameDeepMembers(output, expectedOutput, 'Output structure');
             done();
         });
     });
@@ -146,7 +152,7 @@ describe('xtractor.extractFromFile()', function() {
                     }]
                 }
             ];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.sameDeepMembers(output, expectedOutput, 'Output structure');
             done();
         });
     });
@@ -167,7 +173,7 @@ describe('xtractor.extractFromFile()', function() {
         extractFromFile(__dirname + '/sample/edgecases/emptycall.js', ['_', 'i18n._'], function(err, output) {
             assert.ifError(err);
             var expectedOutput = [];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.sameDeepMembers(output, expectedOutput, 'Output structure');
             done();
         });
     });
@@ -189,7 +195,7 @@ describe('xtractor.extractFromFile() pluralization', function() {
                     }]
                 }
             ];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.sameDeepMembers(output, expectedOutput, 'Output structure');
             done();
         });
     });
@@ -231,7 +237,7 @@ describe('xtractor.extractFromFile() with context', function() {
                     }]
                 }
             ];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            assert.sameDeepMembers(output, expectedOutput, 'Output structure');
             done();
         });
     });
@@ -275,7 +281,14 @@ describe('xtractor.extractFromFile() with context', function() {
                     ]
                 }
             ];
-            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+
+            assert.equal(output.length, expectedOutput.length);
+            output.sort((a,b) => a.msgid.localeCompare(b.msgid));
+            expectedOutput.sort((a,b) => a.msgid.localeCompare(b.msgid));
+
+            for (var i=0; i < output.length; i++) {
+                assert.sameDeepMembers(output[i].loc, expectedOutput[i].loc);
+            }
             done();
         });
     });
