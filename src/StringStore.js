@@ -25,20 +25,30 @@ function stringDedupReducer(acc, curr) {
     return acc;
 }
 
-export default class DedupMerger {
+/*
+ * StringStore stores entries of strings, with deduping functionality
+ */
+export default class StringStore {
     constructor() {
-        this.output = [];
+        this._store = [];
     }
 
-    merge(input) {
-        this.output = [input, this.output].reduce(stringDedupReducer, {}).array;
+    // Merge a single entry (object) to the store
+    add(input) {
+        this._store = [[input], this._store].reduce(stringDedupReducer, {}).array;
     }
 
-    mergeArray(input) {
-        this.output = this.output.concat(input).reduce(stringDedupReducer, {}).array;
+    // Merge an array of entries into the store
+    addArray(input) {
+        this._store = [input, this._store].reduce(stringDedupReducer, {}).array;
     }
 
-    getOutput() {
-        return this.output;
+    // Merge an array of arrays of entries into the store
+    addMultipleArrays(input) {
+        this._store = this._store.concat(input).reduce(stringDedupReducer, {}).array;
+    }
+
+    toArray() {
+        return this._store;
     }
 }

@@ -1,6 +1,6 @@
 import glob from 'glob';
 import extractFromFile from './extractFromFile';
-import DedupMerger from './DedupMerger';
+import StringStore from './StringStore';
 
 export default function(globInput, markers, callback) {
     callback = callback || function() {};
@@ -30,9 +30,9 @@ export default function(globInput, markers, callback) {
                 })
                 .map(filepath => extractFromFile(filepath, markers))
             ).then(strings => {
-                const merger = new DedupMerger();
-                merger.mergeArray(strings);
-                const output = merger.getOutput();
+                const store = new StringStore();
+                store.addMultipleArrays(strings);
+                const output = store.toArray();
                 resolve(output);
                 callback(null, output);
             })
