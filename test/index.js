@@ -36,6 +36,49 @@ describe('xtractor.extractFromFile()', function() {
         });
     });
 
+    it('duplicate strings in a single file', function(done) {
+        extractFromFile(__dirname + '/sample/duplicate.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+            var expectedOutput = [
+                {
+                    msgid: 'String 1',
+                    loc: [
+                        {
+                            path: __dirname + '/sample/duplicate.js',
+                            line: 1
+                        },
+                        {
+                            path: __dirname + '/sample/duplicate.js',
+                            line: 7
+                        }
+                    ]
+                },
+                {
+                    msgid: 'String 2 Multiline',
+                    loc: [{
+                        path: __dirname + '/sample/duplicate.js',
+                        line: 2
+                    }]
+                },
+                {
+                    msgid: 'String 5 Line 2 Line 3',
+                    loc: [
+                        {
+                            path: __dirname + '/sample/duplicate.js',
+                            line: 4
+                        },
+                        {
+                            path: __dirname + '/sample/duplicate.js',
+                            line: 8
+                        }
+                    ]
+                }
+            ];
+            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            done();
+        });
+    });
+
     it('parses JSX attributes and children correctly', function(done) {
         extractFromFile(__dirname + '/sample/jsx.js', ['_', 'i18n._'], function(err, output) {
             assert.ifError(err);
@@ -134,10 +177,22 @@ describe('xtractor.extractGlob()', function() {
     });
 
     it('extract some js files using glob', function(done) {
-        extractGlob(__dirname + '/sample/!(jsx).js', ['_', 'i18n._'], function(err, output) {
+        extractGlob(__dirname + '/sample/+(normal|jsx).js', ['_', 'i18n._'], function(err, output) {
             assert.ifError(err);
 
-            assert(output.length === 3);
+            assert(output.length === 5);
+            done();
+        });
+    });
+
+    it('dedupes strings across multiple files', function(done) {
+        extractGlob(__dirname + '/sample/*.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+
+            const string1 = output.filter(string => string.msgid === 'String 1');
+            assert(string1.length === 1);
+            assert(string1[0].loc.length === 3);
+
             done();
         });
     });

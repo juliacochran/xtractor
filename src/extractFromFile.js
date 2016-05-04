@@ -56,6 +56,7 @@ function parseAndExtract(source, filepath, markers) {
         ]
     });
     const output = [];
+    const stringsSeen = {};
 
     // traverse the AST
     traverse(ast, {
@@ -66,14 +67,25 @@ function parseAndExtract(source, filepath, markers) {
             if ((type === 'Identifier' && markers.indexOf(name) !== -1) || matchesMarkers(path.get('callee'), markers)) {
                 const msgid = extractString(node.arguments[0]);
                 if (msgid) {
-                    // return filepath and start line no.
-                    output.push({
-                        msgid,
-                        loc: [{
+                    // check if we've seen the string before
+                    if (stringsSeen[msgid]) {
+                        // just update the loc array if we have
+                        stringsSeen[msgid].loc.push({
                             path: filepath,
                             line: node.loc.start.line
-                        }]
-                    });
+                        });
+                    } else {
+                        // create a new entry and add it to the output
+                        const msgEntry = {
+                            msgid,
+                            loc: [{
+                                path: filepath,
+                                line: node.loc.start.line
+                            }]
+                        };
+                        stringsSeen[msgid] = msgEntry;
+                        output.push(msgEntry);
+                    }
                 }
             }
         }
