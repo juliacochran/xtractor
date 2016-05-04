@@ -35,15 +35,15 @@ xtractor.extractFromFile(__dirname + '/source.js', ['_', 'i18n._'])
 ### Extract strings from a glob
 
 ```js
-xtractor.extractFromFile(__dirname + '/*.js', ['_', 'i18n._'], function(err, strings) {
+xtractor.extractGlob(__dirname + '/*.js', ['_', 'i18n._'], function(err, strings) {
     // use strings
 });
 ```
 
-A promise-based API is also supported
+Promised-based API
 
 ```js
-xtractor.extractFromFile(__dirname + '/*.js', ['_', 'i18n._'])
+xtractor.extractGlob(__dirname + '/*.js', ['_', 'i18n._'])
 .then(function(err, strings) {
     // use strings
 });
