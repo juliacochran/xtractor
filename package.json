@@ -1,6 +1,6 @@
 {
   "name": "xtractor",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "String extraction for i18n",
   "main": "lib/index.js",
   "scripts": {
@@ -9,8 +9,12 @@
     "build": "rm -rf lib && mkdir lib && babel src --out-dir lib",
     "prepublish": "npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pinterest-web/xtractor.git"
+  },
   "author": "Arthur Lee <arthur@pinterest.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.8.0",
     "babel-eslint": "^6.0.4",
@@ -18,6 +22,9 @@
     "eslint": "^2.9.0",
     "mocha": "^2.4.5"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "babel-traverse": "^6.8.0",
     "babylon": "^6.7.0",
