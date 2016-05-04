@@ -48,3 +48,46 @@ xtractor.extractFromFile(__dirname + '/*.js', ['_', 'i18n._'])
     // use strings
 });
 ```
+
+## Expected and output format
+
+The expected format for extraction is a call to the marker function with either one or three arguments, depending on pluralization.
+
+Suppose the marker function is `i18n._()`:
+
+### Singular
+```js
+const str = _('You have new messages');
+```
+will output
+```json
+{
+    "msgid": "You have new messages",
+    "loc": [
+        {
+            "filepath": "sample.js",
+            "line": 1
+        }
+    ]
+}
+```
+
+### Plural
+```js
+const str = _('You have {{ count }} new message', 'You have {{ count }} new messages', count);
+```
+will output
+```json
+{
+    "msgid": [
+        "You have {{ count }} new message",
+        "You have {{ count }} new messages"
+    ],
+    "loc": [
+        {
+            "filepath": "sample.js",
+            "line": 1
+        }
+    ]
+}
+```
