@@ -248,6 +248,16 @@ describe('xtractor.extractFromFile() with context', function() {
             var expectedOutput = [
                 {
                     msgid: 'String 1',
+                    msgctxt: 'This is a special string 1',
+                    loc: [
+                        {
+                            path: __dirname + '/sample/withcontext/duplicate.js',
+                            line: 9
+                        }
+                    ]
+                },
+                {
+                    msgid: 'String 1',
                     loc: [
                         {
                             path: __dirname + '/sample/withcontext/duplicate.js',
@@ -334,6 +344,19 @@ describe('xtractor.extractGlob()', function() {
             assert(string1.length === 1);
             assert(string1[0].loc.length === 3);
 
+            done();
+        });
+    });
+});
+
+describe('xtractor.extractGlob() with context', function() {
+    beforeEach(function() {});
+
+    it('extract duplicates across files with context', function(done) {
+        extractGlob(__dirname + '/sample/withcontext/*.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+
+            assert(output.length === 6);
             done();
         });
     });

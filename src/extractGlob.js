@@ -1,32 +1,6 @@
 import glob from 'glob';
 import extractFromFile from './extractFromFile';
-
-// a reducer function that takes multiple msg entries,
-// deduping and combining msg entries when the strings are the same
-function stringDedupReducer(acc, curr) {
-    // init the map for fast string lookup
-    if (!acc.map) {
-        acc.map = {};
-    }
-
-    // init the accumulated array of string entries
-    if (!acc.array) {
-        acc.array = [];
-    }
-
-    // take each entry in curr, add it to the map if necessary
-    curr.forEach(entry => {
-        if (acc.map[entry.msgid]) {
-            acc.map[entry.msgid].loc = acc.map[entry.msgid].loc.concat(entry.loc);
-        } else {
-            acc.map[entry.msgid] = entry;
-            acc.array.push(entry);
-        }
-    });
-
-    // reconcile with acc
-    return acc;
-}
+import DedupMerger from './DedupMerger';
 
 export default function(globInput, markers, callback) {
     callback = callback || function() {};
@@ -56,7 +30,9 @@ export default function(globInput, markers, callback) {
                 })
                 .map(filepath => extractFromFile(filepath, markers))
             ).then(strings => {
-                const output = strings.reduce(stringDedupReducer, {}).array;
+                const merger = new DedupMerger();
+                merger.mergeArray(strings);
+                const output = merger.getOutput();
                 resolve(output);
                 callback(null, output);
             })

@@ -34,6 +34,10 @@ export default class DedupMerger {
         this.output = [input, this.output].reduce(stringDedupReducer, {}).array;
     }
 
+    mergeArray(input) {
+        this.output = this.output.concat(input).reduce(stringDedupReducer, {}).array;
+    }
+
     getOutput() {
         return this.output;
     }
