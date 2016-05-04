@@ -1,2 +1,2 @@
 lib/
-test/sample
+test/**/fixture*.js
