@@ -27,8 +27,11 @@ A promise-based API is also supported
 
 ```js
 xtractor.extractFromFile(__dirname + '/source.js', ['_', 'i18n._'])
-.then(function(err, strings) {
+.then(function(strings) {
     // use strings
+})
+.catch(function(err) {
+    // process error
 });
 ```
 
@@ -46,6 +49,9 @@ Promised-based API
 xtractor.extractGlob(__dirname + '/*.js', ['_', 'i18n._'])
 .then(function(err, strings) {
     // use strings
+})
+.catch(function(err) {
+    // process error
 });
 ```
 
