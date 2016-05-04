@@ -162,6 +162,35 @@ describe('xtractor.extractFromFile()', function() {
             done();
         });
     });
+
+    it('handles empty calls to gettext', function(done) {
+        extractFromFile(__dirname + '/sample/edgecases/emptycall.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+            var expectedOutput = [];
+            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            done();
+        });
+    });
+
+    it('handles pluralized strings', function(done) {
+        extractFromFile(__dirname + '/sample/plural/plural.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+            var expectedOutput = [
+                {
+                    msgid: [
+                        '{{ count }} pin',
+                        '{{ count }} pins'
+                    ],
+                    loc: [{
+                        path: __dirname + '/sample/plural/plural.js',
+                        line: 1
+                    }]
+                }
+            ];
+            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            done();
+        });
+    });
 });
 
 describe('xtractor.extractGlob()', function() {

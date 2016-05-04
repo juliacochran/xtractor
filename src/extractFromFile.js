@@ -65,7 +65,17 @@ function parseAndExtract(source, filepath, markers) {
             const {callee: {name, type}} = node;
 
             if ((type === 'Identifier' && markers.indexOf(name) !== -1) || matchesMarkers(path.get('callee'), markers)) {
-                const msgid = extractString(node.arguments[0]);
+                let msgid;
+                if (node.arguments.length === 0) {
+                    msgid = null;
+                } else if (node.arguments.length === 1) {
+                    msgid = extractString(node.arguments[0]);
+                } else {
+                    msgid = [
+                        extractString(node.arguments[0]),
+                        extractString(node.arguments[1])
+                    ];
+                }
                 if (msgid) {
                     // check if we've seen the string before
                     if (stringsSeen[msgid]) {
