@@ -171,7 +171,9 @@ describe('xtractor.extractFromFile()', function() {
             done();
         });
     });
+});
 
+describe('xtractor.extractFromFile() pluralization', function() {
     it('handles pluralized strings', function(done) {
         extractFromFile(__dirname + '/sample/plural/plural.js', ['_', 'i18n._'], function(err, output) {
             assert.ifError(err);
@@ -185,6 +187,92 @@ describe('xtractor.extractFromFile()', function() {
                         path: __dirname + '/sample/plural/plural.js',
                         line: 1
                     }]
+                }
+            ];
+            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            done();
+        });
+    });
+});
+
+describe('xtractor.extractFromFile() with context', function() {
+    it('handles context uniqueness', function(done) {
+        extractFromFile(__dirname + '/sample/withcontext/normal.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+            var expectedOutput = [
+                {
+                    msgid: 'String 1',
+                    loc: [{
+                        path: __dirname + '/sample/withcontext/normal.js',
+                        line: 1
+                    }]
+                },
+                {
+                    msgid: 'String 2 Multiline',
+                    msgctxt: 'String 2 context',
+                    loc: [{
+                        path: __dirname + '/sample/withcontext/normal.js',
+                        line: 2
+                    }]
+                },
+                {
+                    msgid: 'String 5 Line 2 Line 3',
+                    loc: [{
+                        path: __dirname + '/sample/withcontext/normal.js',
+                        line: 4
+                    }]
+                },
+                {
+                    msgid: 'String 1',
+                    msgctxt: 'This is a special string 1',
+                    loc: [{
+                        path: __dirname + '/sample/withcontext/normal.js',
+                        line: 7
+                    }]
+                }
+            ];
+            assert.deepStrictEqual(output, expectedOutput, 'Output structure');
+            done();
+        });
+    });
+
+    it('handles context with duplicates', function(done) {
+        extractFromFile(__dirname + '/sample/withcontext/duplicate.js', ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+            var expectedOutput = [
+                {
+                    msgid: 'String 1',
+                    loc: [
+                        {
+                            path: __dirname + '/sample/withcontext/duplicate.js',
+                            line: 1
+                        },
+                        {
+                            path: __dirname + '/sample/withcontext/duplicate.js',
+                            line: 7
+                        }
+                    ]
+                },
+                {
+                    msgid: 'String 2 Multiline',
+                    loc: [{
+                        path: __dirname + '/sample/withcontext/duplicate.js',
+                        line: 2
+                    }]
+                },
+                {
+                    msgid: 'String 5 Line 2 Line 3',
+                    msgctxt: 'Special context',
+                    loc: [
+                        {
+                            path: __dirname + '/sample/withcontext/duplicate.js',
+                            line: 4
+                        },
+                        {
+                            path: __dirname + '/sample/withcontext/duplicate.js',
+                            line: 8
+                        }
+                    ]
                 }
             ];
             assert.deepStrictEqual(output, expectedOutput, 'Output structure');
