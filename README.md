@@ -2,7 +2,7 @@
 
 > Simple string extraction
 
-**xtractor** statically analyzes files or globs of files and extracts strings within designated function call
+**xtractor** statically analyzes js files or globs of files and extracts strings within designated function call
 
 ## Usage
 
@@ -12,7 +12,7 @@ var xtractor = require('xtractor');
 ```
 or
 ```js
-import xtractor from 'xtractor';
+import * as xtractor from 'xtractor';
 ```
 
 ### Extract strings from a file
