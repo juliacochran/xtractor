@@ -205,6 +205,17 @@ describe('xtractor.extractGlob()', function() {
         });
     });
 
+    it('glob ignore options', function(done) {
+        extractGlob({
+            glob: __dirname + '/sample/*.js',
+            ignorePattern: /jsx\.js/
+        }, ['_', 'i18n._'], function(err, output) {
+            assert.ifError(err);
+            assert(output.length === 3);
+            done();
+        });
+    });
+
     it('extract some js files using glob', function(done) {
         extractGlob(__dirname + '/sample/+(normal|jsx).js', ['_', 'i18n._'], function(err, output) {
             assert.ifError(err);

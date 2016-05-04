@@ -49,6 +49,17 @@ xtractor.extractGlob(__dirname + '/*.js', ['_', 'i18n._'])
 });
 ```
 
+Specify an object with the glob as the `glob` property and a regexp ignore pattern as the `ignorePattern` property
+
+```js
+xtractor.extractGlob({
+    glob: __dirname + '/**/*.js',
+    ignorePattern: /node_modules/
+}, ['_', 'i18n._'], function(err, strings) {
+    // use strings
+});
+```
+
 ## Expected and output format
 
 The expected format for extraction is a call to the marker function with either one or three arguments, depending on pluralization.
@@ -57,7 +68,7 @@ Suppose the marker function is `i18n._()`:
 
 ### Singular
 ```js
-const str = _('You have new messages');
+const str = i18n._('You have new messages');
 ```
 will output
 ```json
@@ -74,7 +85,7 @@ will output
 
 ### Plural
 ```js
-const str = _('You have {{ count }} new message', 'You have {{ count }} new messages', count);
+const str = i18n._('You have {{ count }} new message', 'You have {{ count }} new messages', count);
 ```
 will output
 ```json
