@@ -31,6 +31,7 @@
   "dependencies": {
     "babel-traverse": "^6.8.0",
     "babylon": "^6.7.0",
+    "gettext-parser": "^1.1.2",
     "minimist": "^1.2.0",
     "node-glob": "^1.2.0"
   }

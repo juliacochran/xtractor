@@ -21,7 +21,7 @@ export default function parseAndExtract(source, filepath, markers, store) {
                 // make sure we are in a gettext or translation function
                 if (path.node.arguments[1]) {
                     const lineno = path.parent.expressions[0].right.value;
-                    let msgid, msgctxt;
+                    let msgid, msgctxt, msgid_plural;
                     if (path.node.arguments[1].value === '_') {
                         // singular case
                         msgid = path.node.arguments[2].elements[0].value;
@@ -30,10 +30,8 @@ export default function parseAndExtract(source, filepath, markers, store) {
                         }
                     } else if (path.node.arguments[1].value === 'ngettext') {
                         // plural case
-                        msgid = [
-                            path.node.arguments[2].elements[0].value,
-                            path.node.arguments[2].elements[1].value
-                        ];
+                        msgid = path.node.arguments[2].elements[0].value;
+                        msgid_plural = path.node.arguments[2].elements[1].value;
                         if (path.node.arguments[2].elements[2] && path.node.arguments[2].elements[2].type === 'StringLiteral') {
                             msgctxt = path.node.arguments[2].elements[2].value;
                         }
@@ -48,6 +46,9 @@ export default function parseAndExtract(source, filepath, markers, store) {
                             line: lineno
                         }]
                     };
+                    if (msgid_plural) {
+                        entryToAdd.msgid_plural = msgid_plural;
+                    }
                     if (msgctxt) {
                         entryToAdd.msgctxt = msgctxt;
                     }

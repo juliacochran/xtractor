@@ -8,10 +8,8 @@ describe('xtractor.extractFromFile() -- pluralization', function() {
             assert.ifError(err);
             var expectedOutput = [
                 {
-                    msgid: [
-                        '{{ count }} pin',
-                        '{{ count }} pins'
-                    ],
+                    msgid: '{{ count }} pin',
+                    msgid_plural: '{{ count }} pins',
                     loc: [{
                         path: __dirname + '/fixture.js',
                         line: 1

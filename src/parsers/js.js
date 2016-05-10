@@ -50,7 +50,7 @@ export default function parseAndExtract(source, filepath, markers, store) {
             const {callee: {name, type}} = node;
 
             if ((type === 'Identifier' && markers.indexOf(name) !== -1) || matchesMarkers(path.get('callee'), markers)) {
-                let msgid, msgctxt;
+                let msgid, msgctxt, msgid_plural;
 
                 //TODO: handle unexpected args
                 if (node.arguments.length === 1) {
@@ -62,16 +62,12 @@ export default function parseAndExtract(source, filepath, markers, store) {
                     msgctxt = extractString(node.arguments[1]);
                 } else if (node.arguments.length === 3) {
                     // plural, no context
-                    msgid = [
-                        extractString(node.arguments[0]),
-                        extractString(node.arguments[1])
-                    ];
+                    msgid = extractString(node.arguments[0]);
+                    msgid_plural = extractString(node.arguments[1]);
                 } else if (node.arguments.length === 4){
                     // plural, with context
-                    msgid = [
-                        extractString(node.arguments[0]),
-                        extractString(node.arguments[1])
-                    ];
+                    msgid = extractString(node.arguments[0]);
+                    msgid_plural = extractString(node.arguments[1]);
                     msgctxt = extractString(node.arguments[3])
                 }
                 if (msgid) {
@@ -83,6 +79,9 @@ export default function parseAndExtract(source, filepath, markers, store) {
                             line: node.loc.start.line
                         }]
                     };
+                    if (msgid_plural) {
+                        entryToAdd.msgid_plural = msgid_plural;
+                    }
                     if (msgctxt) {
                         entryToAdd.msgctxt = msgctxt;
                     }

@@ -6,7 +6,8 @@ const tests = [
     'templateLiterals',
     'withContext',
     'glob',
-    'nunjucksjs'
+    'nunjucksjs',
+    'po'
 ];
 
 tests.forEach(test => require(`./${test}/test.js`));

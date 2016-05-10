@@ -11,20 +11,16 @@ describe('xtractor.extractFromFile() -- nunjucksjs', function() {
 
             var expectedOutput = [
                 {
-                    msgid: [
-                        "<span class='value'>{{ formatted_count }}</span> <span class='label'>board</span>",
-                        "<span class='value'>{{ formatted_count }}</span> <span class='label'>boards</span>"
-                    ],
+                    msgid: "<span class='value'>{{ formatted_count }}</span> <span class='label'>board</span>",
+                    msgid_plural: "<span class='value'>{{ formatted_count }}</span> <span class='label'>boards</span>",
                     loc: [{
                         path: 'templates/macros/format.nunjucks',
                         line: 11
                     }]
                 },
                 {
-                    msgid: [
-                        "<span class='value'>{{ formatted_count }}</span> <span class='label'>Board</span>",
-                        "<span class='value'>{{ formatted_count }}</span> <span class='label'>Boards</span>"
-                    ],
+                    msgid: "<span class='value'>{{ formatted_count }}</span> <span class='label'>Board</span>",
+                    msgid_plural: "<span class='value'>{{ formatted_count }}</span> <span class='label'>Boards</span>",
                     loc: [{
                         path: 'templates/macros/format.nunjucks',
                         line: 3
