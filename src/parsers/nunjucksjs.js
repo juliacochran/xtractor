@@ -1,5 +1,8 @@
 import {parse} from 'babylon';
 import traverse from 'babel-traverse';
+import minimist from 'minimist';
+
+const argv = minimist(process.argv.slice(2));
 
 export default function parseAndExtract(source, filepath, markers, store) {
     // construct act using babylon, with all plugins enabled
@@ -14,6 +17,9 @@ export default function parseAndExtract(source, filepath, markers, store) {
         MemberExpression: function(path) {
             if (path.node.object.type === 'AssignmentExpression' && path.node.object.left.object.name === 'window' && path.node.object.left.property.name === 'nunjucksPrecompiled') {
                 currentFile = path.node.property.value;
+                if (argv.verbose) {
+                    console.log(currentFile);
+                }
             }
         },
         CallExpression: function(path) {
