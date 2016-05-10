@@ -1,8 +1,11 @@
 import fs from 'fs';
 import path from 'path';
+import minimist from 'minimist';
 import StringStore from './StringStore';
 import parseJs from './parsers/js';
 import parseNunjucks from './parsers/nunjucksjs';
+
+const argv = minimist(process.argv.slice(2));
 
 export default function(filepath, markers, callback) {
     callback = callback || function() {};
@@ -25,6 +28,10 @@ export default function(filepath, markers, callback) {
                 case '.nunjucksjs':
                     parseNunjucks(source, filepath, markers, store);
                     break;
+            }
+
+            if (argv.verbose) {
+                console.log(filepath);
             }
 
             const extractedStrings = store.toArray();
