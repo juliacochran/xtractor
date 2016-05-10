@@ -1,6 +1,6 @@
 {
   "name": "xtractor",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "String extraction for i18n",
   "main": "lib/index.js",
   "scripts": {
