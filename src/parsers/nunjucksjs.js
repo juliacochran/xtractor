@@ -7,7 +7,7 @@ export default function parseAndExtract(source, filepath, markers, store) {
         sourceType: 'module'
     });
 
-    var currentFile;
+    let currentFile;
 
     traverse(ast, {
         MemberExpression: function(path) {
@@ -19,15 +19,16 @@ export default function parseAndExtract(source, filepath, markers, store) {
             if (path.node.callee.type === 'MemberExpression' && path.node.callee.object.name === 'runtime' && path.node.callee.property.name === 'callWrap') {
                 // make sure we are in a gettext or translation function
                 if (path.node.arguments[1]) {
-                    var lineno = path.parent.expressions[0].right.value;
-                    var msgid;
-                    var msgctxt;
+                    const lineno = path.parent.expressions[0].right.value;
+                    let msgid, msgctxt;
                     if (path.node.arguments[1].value === '_') {
+                        // singular case
                         msgid = path.node.arguments[2].elements[0].value;
                         if (path.node.arguments[2].elements[1] && path.node.arguments[2].elements[1].type === 'StringLiteral') {
                             msgctxt = path.node.arguments[2].elements[1].value;
                         }
                     } else if (path.node.arguments[1].value === 'ngettext') {
+                        // plural case
                         msgid = [
                             path.node.arguments[2].elements[0].value,
                             path.node.arguments[2].elements[1].value
