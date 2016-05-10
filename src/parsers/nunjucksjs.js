@@ -4,7 +4,8 @@ import traverse from 'babel-traverse';
 export default function parseAndExtract(source, filepath, markers, store) {
     // construct act using babylon, with all plugins enabled
     const ast = parse(source, {
-        sourceType: 'module'
+        sourceType: 'module',
+        allowReturnOutsideFunction: true
     });
 
     let currentFile;
