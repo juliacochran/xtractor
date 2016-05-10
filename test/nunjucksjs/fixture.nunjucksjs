@@ -1,0 +1,87 @@
+(function() {
+(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/macros/format.nunjucks"] = (function() {
+function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "\n";
+var macro_t_1 = runtime.makeMacro(
+["count", "formatted_count"], ["capitalize"],
+function(l_count, l_formatted_count, kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+if (kwargs.hasOwnProperty("caller")) {
+frame.set("caller", kwargs.caller);
+}
+frame.set("count", l_count);
+frame.set("formatted_count", l_formatted_count);
+frame.set("capitalize", kwargs.hasOwnProperty("capitalize") ? kwargs["capitalize"] : false);
+var t_2 = "";
+t_2 += "\n    ";
+if (runtime.contextOrFrameLookup(context, frame, "capitalize")) {
+t_2 += "\n        ";
+var macro_t_3 = runtime.makeMacro(
+[], [],
+function(kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+if (kwargs.hasOwnProperty("caller")) {
+frame.set("caller", kwargs.caller);
+}
+var t_4 = "";
+var t_5;
+t_5 = {
+"count": l_count,
+"formatted_count": l_formatted_count
+};
+frame.set("__dict", t_5, true);
+context.setVariable("__dict", t_5);
+t_4 += runtime.suppressValue((lineno = 3, colno = 9, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "_interpolate"), "_interpolate", [(lineno = 3, colno = 9, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "ngettext"), "ngettext", ["<span class='value'>{{ formatted_count }}</span> <span class='label'>Board</span>", "<span class='value'>{{ formatted_count }}</span> <span class='label'>Boards</span>", runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "__dict")), "count", env.autoesc)])), runtime.contextOrFrameLookup(context, frame, "__dict")])), env.autoesc);;
+frame = frame.pop();
+return new runtime.SafeString(t_4);
+});
+frame.set("_doTranslation", macro_t_3);
+t_2 += runtime.suppressValue((lineno = 3, colno = 9, runtime.callWrap(macro_t_3, "_doTranslation", [])), env.autoesc);
+t_2 += "\n    ";;
+} else {
+t_2 += "\n        ";
+var macro_t_6 = runtime.makeMacro(
+[], [],
+function(kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+if (kwargs.hasOwnProperty("caller")) {
+frame.set("caller", kwargs.caller);
+}
+var t_7 = "";
+var t_8;
+t_8 = {
+"count": l_count,
+"formatted_count": l_formatted_count
+};
+frame.set("__dict", t_8, true);
+context.setVariable("__dict", t_8);
+t_7 += runtime.suppressValue((lineno = 11, colno = 9, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "_interpolate"), "_interpolate", [(lineno = 11, colno = 9, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "ngettext"), "ngettext", ["<span class='value'>{{ formatted_count }}</span> <span class='label'>board</span>", "<span class='value'>{{ formatted_count }}</span> <span class='label'>boards</span>", runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "__dict")), "count", env.autoesc)])), runtime.contextOrFrameLookup(context, frame, "__dict")])), env.autoesc);;
+frame = frame.pop();
+return new runtime.SafeString(t_7);
+});
+frame.set("_doTranslation", macro_t_6);
+t_2 += runtime.suppressValue((lineno = 11, colno = 9, runtime.callWrap(macro_t_6, "_doTranslation", [])), env.autoesc);
+t_2 += "\n    ";;
+}
+t_2 += "\n";;
+frame = frame.pop();
+return new runtime.SafeString(t_2);
+});
+output += "\n\n";
+cb(null, output);;
+} catch (e) {
+cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();

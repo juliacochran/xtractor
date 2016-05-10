@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import StringStore from './StringStore';
 import parseJs from './parsers/js';
+import parseNunjucks from './parsers/nunjucksjs';
 
 export default function(filepath, markers, callback) {
     callback = callback || function() {};
@@ -20,6 +21,9 @@ export default function(filepath, markers, callback) {
                 case '.js':
                 case '.jsx':
                     parseJs(source, filepath, markers, store);
+                    break;
+                case '.nunjucksjs':
+                    parseNunjucks(source, filepath, markers, store);
                     break;
             }
 

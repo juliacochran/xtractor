@@ -1,0 +1,58 @@
+import {parse} from 'babylon';
+import traverse from 'babel-traverse';
+
+export default function parseAndExtract(source, filepath, markers, store) {
+    // construct act using babylon, with all plugins enabled
+    const ast = parse(source, {
+        sourceType: 'module'
+    });
+
+    var currentFile;
+
+    traverse(ast, {
+        MemberExpression: function(path) {
+            if (path.node.object.type === 'AssignmentExpression' && path.node.object.left.object.name === 'window' && path.node.object.left.property.name === 'nunjucksPrecompiled') {
+                currentFile = path.node.property.value;
+            }
+        },
+        CallExpression: function(path) {
+            if (path.node.callee.type === 'MemberExpression' && path.node.callee.object.name === 'runtime' && path.node.callee.property.name === 'callWrap') {
+                // make sure we are in a gettext or translation function
+                if (path.node.arguments[1]) {
+                    var lineno = path.parent.expressions[0].right.value;
+                    var msgid;
+                    var msgctxt;
+                    if (path.node.arguments[1].value === '_') {
+                        msgid = path.node.arguments[2].elements[0].value;
+                        if (path.node.arguments[2].elements[1] && path.node.arguments[2].elements[1].type === 'StringLiteral') {
+                            msgctxt = path.node.arguments[2].elements[1].value;
+                        }
+                    } else if (path.node.arguments[1].value === 'ngettext') {
+                        msgid = [
+                            path.node.arguments[2].elements[0].value,
+                            path.node.arguments[2].elements[1].value
+                        ];
+                        if (path.node.arguments[2].elements[2] && path.node.arguments[2].elements[2].type === 'StringLiteral') {
+                            msgctxt = path.node.arguments[2].elements[2].value;
+                        }
+                    } else {
+                        return;
+                    }
+
+                    const entryToAdd = {
+                        msgid,
+                        loc: [{
+                            path: currentFile,
+                            line: lineno
+                        }]
+                    };
+                    if (msgctxt) {
+                        entryToAdd.msgctxt = msgctxt;
+                    }
+
+                    store.add(entryToAdd);
+                }
+            }
+        }
+    });
+}
