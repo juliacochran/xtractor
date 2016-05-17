@@ -69,8 +69,8 @@ msgid "Safe mode alert!"
 msgstr ""
 
 #: ${__dirname}/fixture.js:13
-msgid "Safe mode alert!"
 msgctxt "settings"
+msgid "Safe mode alert!"
 msgstr ""`;
 
         var output = writePo(input, {
