@@ -1,6 +1,6 @@
-// a reducer function that takes multiple msg entries,
+// a reducer function that takes msg entries,
 // deduping and combining msg entries when the strings are the same
-function stringDedupReducer(acc, curr) {
+function stringDedupReducer(acc, entry) {
     // init the map for fast string lookup
     if (!acc.map) {
         acc.map = {};
@@ -11,15 +11,12 @@ function stringDedupReducer(acc, curr) {
         acc.array = [];
     }
 
-    // take each entry in curr, add it to the map if necessary
-    curr.forEach(entry => {
-        if (acc.map[[entry.msgid, entry.msgctxt]]) {
-            acc.map[[entry.msgid, entry.msgctxt]].loc = acc.map[[entry.msgid, entry.msgctxt]].loc.concat(entry.loc);
-        } else {
-            acc.map[[entry.msgid, entry.msgctxt]] = entry;
-            acc.array.push(entry);
-        }
-    });
+    if (acc.map[[entry.msgid, entry.msgctxt]]) {
+        acc.map[[entry.msgid, entry.msgctxt]].loc = acc.map[[entry.msgid, entry.msgctxt]].loc.concat(entry.loc);
+    } else {
+        acc.map[[entry.msgid, entry.msgctxt]] = entry;
+        acc.array.push(entry);
+    }
 
     // reconcile with acc
     return acc;
@@ -35,17 +32,24 @@ export default class StringStore {
 
     // Merge a single entry (object) to the store
     add(input) {
-        this._store = [[input], this._store].reduce(stringDedupReducer, {}).array;
+        this._store.push(input);
+        this.dedupStore();
     }
 
     // Merge an array of entries into the store
     addArray(input) {
-        this._store = [input, this._store].reduce(stringDedupReducer, {}).array;
+        this._store = this._store.concat(input);
+        this.dedupStore();
     }
 
     // Merge an array of arrays of entries into the store
     addMultipleArrays(input) {
-        this._store = this._store.concat(input).reduce(stringDedupReducer, {}).array;
+        this._store = this._store.concat(...input);
+        this.dedupStore();
+    }
+
+    dedupStore() {
+        this._store = this._store.reduce(stringDedupReducer, {}).array;
     }
 
     toArray() {
