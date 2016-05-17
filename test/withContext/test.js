@@ -27,8 +27,8 @@ describe('xtractor.extractFromFile() -- withContext', function() {
             assert.ifError(err);
 
             var expectedOutput = buildOutput(DUPLICATE_PATH, {
-                'String 1:This is a special string 1': [9],
                 'String 1': [1, 7],
+                'String 1:This is a special string 1': [9],
                 'String 2 Multiline': [2],
                 'String 5 Line 2 Line 3:Special context': [4, 8]
             });
