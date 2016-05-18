@@ -7,12 +7,25 @@ function matchesMarkers(callee, markers) {
         .reduce((prev, curr) => prev || curr, false);
 }
 
+function createPlaceholderString(templateLiteral) {
+    if (templateLiteral.expressions.length || templateLiteral.quasis.length > 1) {
+        // the template string is interpolated - so we do not support it
+        // console.warn('Unsupported interpolated template string');
+        return null;
+    }
+    return templateLiteral.quasis[0].value.cooked;
+}
+
 // adapted from https://github.com/oliviertassinari/i18n-extract/blob/master/src/extractFromCode.js
 function extractString(node) {
     if (node.type === 'StringLiteral') {
         return node.value;
     } else if (node.type === 'BinaryExpression' && node.operator === '+') {
         return extractString(node.left) + extractString(node.right);
+    } else if (node.type ==='TemplateLiteral') {
+        return createPlaceholderString(node);
+    } else if (node.type ==='TaggedTemplateExpression') {
+        return createPlaceholderString(node.quasi);
     } else if (node.type === 'CallExpression' || node.type === 'Identifier') {
         return null; // We can't extract anything.
     } else {
