@@ -25,6 +25,25 @@ describe('xtractor.writePo() -- pluralization', function() {
                         line: 5
                     }
                 ]
+            },
+            {
+                msgid: 'Safe mode alert!',
+                loc: [
+                    {
+                        path: __dirname + '/fixture.js',
+                        line: 10
+                    }
+                ]
+            },
+            {
+                msgid: 'Safe mode alert!',
+                msgctxt: 'settings',
+                loc: [
+                    {
+                        path: __dirname + '/fixture.js',
+                        line: 13
+                    }
+                ]
             }
         ];
 
@@ -43,6 +62,15 @@ msgstr[1] ""
 #: ${__dirname}/fixture.js:3
 #: ${__dirname}/otherfile.js:5
 msgid "Test string"
+msgstr ""
+
+#: ${__dirname}/fixture.js:10
+msgid "Safe mode alert!"
+msgstr ""
+
+#: ${__dirname}/fixture.js:13
+msgctxt "settings"
+msgid "Safe mode alert!"
 msgstr ""`;
 
         var output = writePo(input, {
