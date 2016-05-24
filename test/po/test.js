@@ -1,10 +1,11 @@
 var assert = require('chai').assert;
 var writePo = require('../../lib/').writePo;
+var parsePo = require('../../lib/').parsePo;
 
-describe('xtractor.writePo() -- pluralization', function() {
+describe('xtractor.writePo(), xtractor.parsePo()', function() {
 
     it('correctly compiles po', function() {
-        var input = [
+        var translationObject = [
             {
                 msgid: '{{ count }} pin',
                 msgid_plural: '{{ count }} pins',
@@ -47,7 +48,7 @@ describe('xtractor.writePo() -- pluralization', function() {
             }
         ];
 
-        var expectedOutput = `msgid ""
+        var poString = `msgid ""
 msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\\n"
 "Content-Type: text/plain; charset=utf-8\\n"
@@ -73,7 +74,7 @@ msgctxt "settings"
 msgid "Safe mode alert!"
 msgstr ""`;
 
-        var output = writePo(input, {
+        var output = writePo(translationObject, {
             charset: 'utf-8',
             headers: {
                 "plural-forms": "nplurals=2; plural=(n != 1);\n",
@@ -82,6 +83,47 @@ msgstr ""`;
             }
         });
 
-        assert.equal(output.toString('utf-8'), expectedOutput);
+        assert.equal(output.toString('utf-8'), poString);
+    });
+
+    it('correctly parses po', function() {
+        var poString = `msgid ""
+        msgstr ""
+        "Plural-Forms: nplurals=2; plural=(n != 1);\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+
+        #: ${__dirname}/fixture.js:1
+        msgid "{{ count }} pin"
+        msgid_plural "{{ count }} pins"
+        msgstr[0] "a"
+        msgstr[1] "b"
+
+        #: ${__dirname}/fixture.js:3
+        #: ${__dirname}/otherfile.js:5
+        msgid "Test string"
+        msgstr "c"
+
+        #: ${__dirname}/fixture.js:10
+        msgid "Safe mode alert!"
+        msgstr "d"
+
+        #: ${__dirname}/fixture.js:13
+        msgctxt "settings"
+        msgid "Safe mode alert!"
+        msgstr "e"`;
+
+        var expectedOutput = {
+            '': {
+                '{{ count }} pin': ['a', 'b'],
+                'Test string': 'c',
+                'Safe mode alert!': 'd'
+            },
+            'settings': {
+                'Safe mode alert!': 'e'
+            }
+        };
+        var output = parsePo(poString);
+        assert.deepEqual(output, expectedOutput, 'Output structure');
     });
 });
