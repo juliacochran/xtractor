@@ -25,7 +25,7 @@ describe('xtractor.extractFromFile() -- templateLiterals', function() {
                     }]
                 },
                 {
-                    msgid: 'Multiline\nTemplate\nLiteral',
+                    msgid: 'Multiline Template Literal',
                     loc: [{
                         path: FIXTURE_PATH,
                         line: 6
