@@ -4,6 +4,10 @@
 
 const getValues = obj => Object.keys(obj).map(key => obj[key]);
 
+function preprocess(str) {
+    return str.replace(/\s+/g, ' ');
+}
+
 export default class StringStore {
     constructor() {
         this._store = {};
@@ -11,6 +15,7 @@ export default class StringStore {
 
     // Merge a single entry (object) to the store
     add(entry) {
+        entry.msgid = preprocess(entry.msgid);
         if (this._store[[entry.msgid, entry.msgctxt]]) {
             this._store[[entry.msgid, entry.msgctxt]].loc = this._store[[entry.msgid, entry.msgctxt]].loc.concat(entry.loc);
         } else {
