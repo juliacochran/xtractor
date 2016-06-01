@@ -15,6 +15,10 @@ export default class StringStore {
 
     // Merge a single entry (object) to the store
     add(entry) {
+        if (typeof entry.msgid === 'undefined' || entry.msgid === '') {
+            return;
+        }
+
         entry.msgid = preprocess(entry.msgid);
         if (this._store[[entry.msgid, entry.msgctxt]]) {
             this._store[[entry.msgid, entry.msgctxt]].loc = this._store[[entry.msgid, entry.msgctxt]].loc.concat(entry.loc);
