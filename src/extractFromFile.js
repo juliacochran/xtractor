@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'graceful-fs';
 import path from 'path';
 import minimist from 'minimist';
 import StringStore from './StringStore';
