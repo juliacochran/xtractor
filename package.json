@@ -36,6 +36,7 @@
     "babylon": "^6.15.0",
     "eslint": "^2.13.1",
     "gettext-parser": "^1.2.2",
+    "graceful-fs": "^4.1.11",
     "minimist": "^1.2.0",
     "mocha": "^2.5.3",
     "node-glob": "^1.2.0"
