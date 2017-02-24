@@ -23,11 +23,11 @@ export default function(input, options) {
         }
 
         contextObj[entry.msgid] = {
-            msgctxt: entry.msgctxt,
+            '#.': entry.msgctxt,
+            '#:': {reference},
             msgid: entry.msgid,
             msgid_plural: entry.msgid_plural,
-            msgstr: entry.msgid_plural ? ['', ''] : '',
-            comments: {reference}
+            msgstr: entry.msgid_plural ? ['', ''] : ''
         };
     });
 
