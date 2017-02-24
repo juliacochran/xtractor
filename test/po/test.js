@@ -38,7 +38,7 @@ describe('xtractor.writePo(), xtractor.parsePo()', function() {
             },
             {
                 msgid: 'Safe mode alert!',
-                msgctxt: 'settings',
+                ctxtForTranslator: 'settings',
                 loc: [
                     {
                         path: __dirname + '/fixture.js',
@@ -70,7 +70,7 @@ msgid "Safe mode alert!"
 msgstr ""
 
 #: ${__dirname}/fixture.js:13
-msgctxt "settings"
+ctxtForTranslator "settings"
 msgid "Safe mode alert!"
 msgstr ""`;
 
@@ -109,7 +109,7 @@ msgstr ""`;
         msgstr "d"
 
         #: ${__dirname}/fixture.js:13
-        msgctxt "settings"
+        ctxtForTranslator "settings"
         msgid "Safe mode alert!"
         msgstr "e"`;
 

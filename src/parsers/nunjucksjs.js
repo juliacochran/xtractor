@@ -27,19 +27,19 @@ export default function parseAndExtract(source, filepath, markers, store) {
                 // make sure we are in a gettext or translation function
                 if (path.node.arguments[1]) {
                     const lineno = path.parent.expressions[0].right.value;
-                    let msgid, msgctxt, msgid_plural;
+                    let msgid, ctxtForTranslator, msgid_plural;
                     if (path.node.arguments[1].value === '_') {
                         // singular case
                         msgid = path.node.arguments[2].elements[0].value;
                         if (path.node.arguments[2].elements[1] && path.node.arguments[2].elements[1].type === 'StringLiteral') {
-                            msgctxt = path.node.arguments[2].elements[1].value;
+                            ctxtForTranslator = path.node.arguments[2].elements[1].value;
                         }
                     } else if (path.node.arguments[1].value === 'ngettext') {
                         // plural case
                         msgid = path.node.arguments[2].elements[0].value;
                         msgid_plural = path.node.arguments[2].elements[1].value;
                         if (path.node.arguments[2].elements[2] && path.node.arguments[2].elements[2].type === 'StringLiteral') {
-                            msgctxt = path.node.arguments[2].elements[2].value;
+                            ctxtForTranslator = path.node.arguments[2].elements[2].value;
                         }
                     } else {
                         return;
@@ -55,8 +55,8 @@ export default function parseAndExtract(source, filepath, markers, store) {
                     if (msgid_plural) {
                         entryToAdd.msgid_plural = msgid_plural;
                     }
-                    if (msgctxt) {
-                        entryToAdd.msgctxt = msgctxt;
+                    if (ctxtForTranslator) {
+                        entryToAdd.ctxtForTranslator = ctxtForTranslator;
                     }
 
                     store.add(entryToAdd);

@@ -12,7 +12,7 @@ function buildOutput(path, data) {
             })
         };
         if (split[1]) {
-            output.msgctxt = split[1];
+            output.ctxtForTranslator = split[1];
         }
         return output;
     });

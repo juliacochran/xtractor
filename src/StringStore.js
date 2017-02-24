@@ -20,10 +20,10 @@ export default class StringStore {
         }
 
         entry.msgid = preprocess(entry.msgid);
-        if (this._store[[entry.msgid, entry.msgctxt]]) {
-            this._store[[entry.msgid, entry.msgctxt]].loc = this._store[[entry.msgid, entry.msgctxt]].loc.concat(entry.loc);
+        if (this._store[[entry.msgid, entry.ctxtForTranslator]]) {
+            this._store[[entry.msgid, entry.ctxtForTranslator]].loc = this._store[[entry.msgid, entry.ctxtForTranslator]].loc.concat(entry.loc);
         } else {
-            this._store[[entry.msgid, entry.msgctxt]] = entry;
+            this._store[[entry.msgid, entry.ctxtForTranslator]] = entry;
         }
     }
 
